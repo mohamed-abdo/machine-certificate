@@ -1,6 +1,6 @@
 const expess = require("express");
 const request = require("request");
-const { encryptAsym } = require('./crypto.service');
+const { encryptAsym } = require("./crypto.service");
 
 const ipRouter = expess.Router();
 const ipPromise = new Promise((resolve, reject) => {
@@ -14,13 +14,17 @@ const ipPromise = new Promise((resolve, reject) => {
   );
 });
 ipRouter.get("/", (_, res, next) => {
-  ipPromise
-    .then((data) => res.status(200).send(data)).catch(next);
+  ipPromise.then((data) => res.status(200).send(data)).catch(next);
 });
 
-ipRouter.get("/enc", (_, res, next) => {
+ipRouter.get("/enc", (req, res, next) => {
   ipPromise
-    .then((data) => res.status(200).send(encryptAsym(JSON.stringify(data)))).catch(next);
+    .then((data) =>
+      res
+        .status(200)
+        .send(encryptAsym(JSON.stringify(data), req.headers["public_key"]))
+    )
+    .catch(next);
 });
 
 module.exports = { ipRouter };
