@@ -14,8 +14,8 @@ function encryptAsym(message, publicKey) {
   const encryptedData = crypto.publicEncrypt(
     {
       key: publicKey_pem,
-      padding: crypto.constants.RSA_PKCS1_PADDING,
-      oaepHash: "sha256",
+      padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+      oaepHash: "sha1",
     },
     // We convert the data string to a buffer using `Buffer.from`
     Buffer.from(message, "utf-8")
